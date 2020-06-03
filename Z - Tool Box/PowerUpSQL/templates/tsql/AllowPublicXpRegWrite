@@ -1,0 +1,33 @@
+Scenario
+--------
+Provide least privilege (public role) SQL Logins the right to execute xp_regwrite in order to maintain persistence oth perform other actions. 
+
+GRANT EXEC ON OBJECT::master.dbo.xp_regwrite TO [Public]
+
+Issue
+-----
+By default, non sysadmin logins can only use xp_regwrite on the followin registry keys. 
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\<INSTANCE> 
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlset\Services\SQLAgent$<INSTANCE>
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\80\Replication
+
+Write access appears to be recursive, with the exception of: 
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL12.STANDARDDEV2014\MSSQLServer\ExtendedProcedures
+
+Solution
+--------
+An undocumentated registry key exists that allows local administrators to set a white list of registry locations that can be read/written 
+to by non sysadmin logins.  Simply add the registry location you wish to white list to registry keys below. 
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL12.STANDARDDEV2014\MSSQLServer\ExtendedProcedures\
+Xp_regread Allowed Paths 
+REG_MULTI_SZ
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL12.STANDARDDEV2014\MSSQLServer\ExtendedProcedures\
+Xp_regwrite Allowed Paths
+REG_MULTI_SZ
+
+After the registry updates are made the only thing restricting access are the privileges assign to the SQL Server service account.
+
+Source: https://support.microsoft.com/en-us/kb/887165

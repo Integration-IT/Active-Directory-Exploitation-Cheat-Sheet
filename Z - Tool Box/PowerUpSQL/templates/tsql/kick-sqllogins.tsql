@@ -1,0 +1,35 @@
+-- This script can be use to kick existing users from a database.
+-- Not recommended if you don't know what you're doing, and is generally a super bad idea if you're not a DBA.
+-- Source: https://dba.stackexchange.com/questions/6031/how-do-you-kick-users-out-of-a-sql-server-2008-database
+
+---------------------
+-- Attack Process
+---------------------
+
+-- Select the master database
+USE master;
+GO
+
+--  Place the target database into single user mode (kick out other logins)
+-- Change [dbname] to desire database name
+ALTER DATABASE [dbname] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO
+
+-- Take the database offline (prevent sessions from re-establishing connection)
+-- Change [dbname] to desire database name
+-- Note: You dont want to do this if you need access to that database.
+
+ALTER DATABASE [dbname] SET OFFLINE;
+
+---------------------
+-- Restore Process
+---------------------
+
+-- Bring database back online 
+-- Change [dbname] to desire database name
+-- Note: This should only be required if the database was taken offline
+ALTER DATABASE [dbname] SET ONLINE;
+
+-- Enable multi user mode 
+-- Change [dbname] to desire database name
+ALTER DATABASE [dbname] SET MULTI_USER;

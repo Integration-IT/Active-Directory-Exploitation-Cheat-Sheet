@@ -1,0 +1,12 @@
+-- Enable advanced options
+EXEC sp_configure 'show advanced options', 1
+RECONFIGURE
+GO
+
+-- Enabled xp_cmdshell
+EXEC sp_configure 'xp_cmdshell', 1
+RECONFIGURE
+GO
+
+-- Execute SQL query on a remote SQL Server as a sysadmin.  This uses the SQL Server service account to authenticate to the remote SQL Server instance. 
+xp_cmdshell 'sqlcmd –E –S SQLServer2\Instance2 –Q "SELECT @@servername"'

@@ -1,0 +1,184 @@
+Below is a cheatsheet for creating SQL Server client connection strings and finding them in common configuration files.
+
+------------------------------------------------------------------
+CREATING CONNECTION STRINGS
+------------------------------------------------------------------
+
+----------------------
+Authentication Options
+----------------------
+
+Current Windows Account
+Server=Server\Instance;Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+ 
+Provided Windows Account
+Server=Server\Instance;Database=Master;Integrated Security=SSPI;Connection Timeout=1;uid=Domain\Account;pwd=Password;"
+
+Provided SQL Login
+Server=Server\Instance;Database=Master;Connection Timeout=1;User ID=Username;Password=Password;"
+
+
+-----------------------
+Connection Type Options
+-----------------------
+
+TCP/IP
+Server=TCP:Server\Instance;Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+
+Named Pipes
+Connecting to instances by name, forcing a named pipes connection.
+Server=np:Server;Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+Server=np:Server\Instance;Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+Default instance: Server=\\APPHOST\pipe\unit\app;Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+Named instance: Server=\\APPHOST\pipe\MSSQL$SQLEXPRESS\SQL\query;Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+
+VIA
+Server=via:Server\Instance;Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+
+Shared Memory
+Server=lpc:Servername\Instance;Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+Server=(local);Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+Server=(.);Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+
+Dedicated Admin Connection
+Server=DAC:Server\Instance;Database=Master;Integrated Security=SSPI;Connection Timeout=1"
+
+
+-----------------------
+Other Options
+-----------------------
+
+Spoof Application Client
+Data Source=(local);Initial Catalog=AdventureWorks;Integrated Security=True;Application Name="My Application"
+Data Source=(local);Initial Catalog=AdventureWorks;Integrated Security=True;ApplicationName=".Net SqlClient Data Provider"
+determine app name in sql server: select APP_NAME() 
+
+Set Encryption
+Driver='ODBC Driver 11 for SQL Server';Server=ServerNameHere;Encrypt=YES;TrustServerCertificate=YES 
+Data Source=(local);Initial Catalog=AdventureWorks;Integrated Security=True;Application Name="My Application";Encrypt=Yes
+
+Encrypt Flag Notes:
+Data sent between client and server is encrypted using SSL. The name (or IP address) in a Subject Common Name (CN) or 
+Subject Alternative Name (SAN) in a SQL Server SSL certificate should exactly match the server name (or IP address) 
+specified in the connection string.
+
+Set Packet Size
+https://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnection.packetsize(v=vs.110).aspx
+Note: This could potentially be used to obfuscate malicious payloads from network IDS going over unencrypted connections.
+"Data Source=(local);Initial Catalog=AdventureWorks;Integrated Security=SSPI;Packet Size=512"
+
+-----------------------
+Online References
+-----------------------
+
+https://msdn.microsoft.com/en-us/library/ms130822.aspx
+https://msdn.microsoft.com/en-us/library/ms188642.aspx
+https://technet.microsoft.com/en-us/library/ms191260(v=sql.105).aspx
+https://technet.microsoft.com/en-us/library/ms187662(v=sql.105).aspx
+https://technet.microsoft.com/en-us/library/ms189307(v=sql.105).aspx
+https://technet.microsoft.com/en-us/library/ms178068(v=sql.105).aspx
+https://technet.microsoft.com/en-us/library/ms189595(v=sql.105).aspx
+https://msdn.microsoft.com/en-us/library/ms254500(v=vs.110).aspx
+https://msdn.microsoft.com/en-us/library/hh568455(v=sql.110).aspx
+https://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnectionstringbuilder(v=vs.110).aspx
+https://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnectionstringbuilder.applicationname(v=vs.110).aspx
+https://www.connectionstrings.com/sql-server/
+
+
+------------------------------------------------------------------
+FINDING CONNECTION STRINGS
+------------------------------------------------------------------
+
+-----------------------
+ODBC/DNS Notes
+-----------------------
+https://technet.microsoft.com/en-us/library/hh771015.aspx
+https://technet.microsoft.com/en-us/library/hh771014.aspx
+
+Get all install ODBC drivers
+Get-OdbcDriver
+
+Get all install ODBC drivers for SQL Server that are 64 bit
+Get-OdbcDriver -Name "SQL Server*" -Platform "64-bit"
+
+Get all ODBC User DSNs for specified driver
+$DsnArray = Get-OdbcDsn -DriverName "SQL Server*"
+
+Get ODBC System DSNs by name
+Get-OdbcDsn -Name "MyPayroll" -DsnType "System" -Platform "32-bit"
+
+Get ODBC DSNs with names that contain a string
+Get-OdbcDsn -Name "*Payroll*"
+
+
+-------------------------------
+Universal Data Link (UDL) Files
+-------------------------------
+https://msdn.microsoft.com/en-us/library/e38h511e(v=vs.71).aspx
+
+.UDL files often contain connection strings in a format similar to:
+
+[oledb]
+; Everything after this line is an OLE DB initstring
+Provider=SQLOLEDB.1;Persist Security Info=False;Data Source=servername;Initial Catalog=Northwind;Integrated Security=SSPI
+
+Finding UDL files
+c:
+cd \
+dir /s /b *.udl
+Get-ChildItem -Path C:\ -Filter *.udl -Recurse | select fullname
+
+
+------------------------------
+ApplicationHost.config Files
+------------------------------
+https://blog.netspi.com/decrypting-iis-passwords-to-break-out-of-the-dmz-part-2/
+
+Decrypt Entire Config File
+--
+1. List application pools.
+
+appcmd list apppools
+appcmd list apppools /text:MyTestPool
+
+2. Get clearext configuration file for specific pool.
+
+appcmd list apppool "MyTestPool" /text:*
+
+Decrypt Virtual Directory and Application Credentials in Config File
+--
+1. List virtual directories.
+
+appcmd list vdir
+
+2. List configuration content.
+
+appcmd list vdir "Bike Shop/" /text:*
+
+------------------------------
+Web.config Files
+------------------------------
+https://blog.netspi.com/decrypting-iis-passwords-to-break-out-of-the-dmz-part-1/#2
+
+Finding web.config files
+--
+c:
+cd \
+dir /s /b web.config
+Get-ChildItem -Path C:\ -Filter web.config -Recurse | select fullname
+
+Finding registered web.config files via appcmd.exe
+--
+Common Paths:
+C:\Program Files\IIS Express\appcmd.exe
+C:\Program Files (x86)\IIS Express\appcmd.exe
+%windir%\system32\inetsrv\appcmd
+
+Common Commands:
+%windir%\system32\inetsrv\appcmd list vdir
+dir /s /b v | find /I "web.config"
+
+Decrypted Web.config with aspnet_regiis.exe
+--
+C:\Windows\Microsoft\.NETFrameworkv\2.0.50727\aspnet_regiis.exe -pdf "connectionStrings" c:\MyTestSite
+ 

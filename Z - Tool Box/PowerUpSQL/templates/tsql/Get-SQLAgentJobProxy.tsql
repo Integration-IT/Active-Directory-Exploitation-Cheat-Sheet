@@ -1,0 +1,30 @@
+   -- Get-SQLAgentJobProxy
+   -- Ref:http://dba.stackexchange.com/questions/137675/how-to-find-what-sql-jobs-are-using-a-specific-account-as-proxy   
+
+   -- Search Credentials (shows account for Name)
+
+    use msdb
+    select *
+    from sys.credentials
+
+    --Search Jobs where there is a 'Run As' proxy and get the name of that proxy
+
+    use msdb
+
+    select  sysjobsteps.job_id
+    , sysjobs.name as 'JobName'
+    , sysjobsteps.step_id
+    , sysjobsteps.step_name
+    , sysjobsteps.subsystem
+    , sysjobsteps.last_run_date
+    , sysjobsteps.proxy_id
+    --, sysjobsteps.step_uid
+    , sysproxies.name as 'ProxyName'
+
+    from sysjobsteps
+    left join dbo.sysproxies
+     on sysjobsteps.proxy_id = sysproxies.proxy_id
+    left join dbo.sysjobs
+     on sysjobsteps.job_id = sysjobs.job_id
+     
+    where sysjobsteps.proxy_id > 0

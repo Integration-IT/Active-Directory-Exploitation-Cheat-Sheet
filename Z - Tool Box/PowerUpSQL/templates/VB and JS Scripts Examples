@@ -1,0 +1,22 @@
+@command=N'function RunCmd()
+{
+
+        var objShell = new ActiveXObject("shell.application");
+        objShell.ShellExecute("cmd.exe", 
+        "/c echo hello >     c:\\windows\\temp\\blah.txt", 
+        "", 
+        "open", 
+        0);
+ }
+
+RunCmd();’
+
+
+@command=N'FUNCTION Main()
+
+dim shell
+set shell= CreateObject ("WScript.Shell")
+shell.run("c:\windows\system32\cmd.exe /c echo hello > c:\windows\temp\blah.txt")
+set shell = nothing
+
+END FUNCTION’, 

