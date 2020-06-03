@@ -1,0 +1,9 @@
+﻿  stdafx.cpp
+  MSFRottenPotatoTestHarness.cpp
+  Generating code
+  3 of 5 functions (60.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  MSFRottenPotatoTestHarness.vcxproj -> I:\RottenPotatoNG\RottenPotatoDLL\x64\Release\MSFRottenPotatoTestHarness.exe
+  MSFRottenPotatoTestHarness.vcxproj -> I:\RottenPotatoNG\RottenPotatoDLL\x64\Release\MSFRottenPotatoTestHarness.pdb (Full PDB)

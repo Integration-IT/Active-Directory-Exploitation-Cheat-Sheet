@@ -1,0 +1,15 @@
+﻿  stdafx.cpp
+  dllmain.cpp
+  IStorageTrigger.cpp
+  LocalNegotiator.cpp
+LocalNegotiator.cpp(72): warning C4018: '>=': signed/unsigned mismatch
+LocalNegotiator.cpp(75): warning C4018: '<': signed/unsigned mismatch
+  MSFRottenPotato.cpp
+MSFRottenPotato.cpp(329): warning C4101: 'ntlmLoc': unreferenced local variable
+     Creating library C:\Users\TEST\Documents\Visual Studio 2015\Projects\MSFRottenPotato\Release\MSFRottenPotato.lib and object C:\Users\TEST\Documents\Visual Studio 2015\Projects\MSFRottenPotato\Release\MSFRottenPotato.exp
+  Generating code
+  Finished generating code
+  73 of 204 functions (35.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
+  MSFRottenPotato.vcxproj -> C:\Users\TEST\Documents\Visual Studio 2015\Projects\MSFRottenPotato\Release\MSFRottenPotato.dll

@@ -1,0 +1,54 @@
+﻿LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:REF' specification
+dllmain.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
+     Creating library E:\VSProjects\Projects\MSFRottenPotato\x64\Debug\MSFRottenPotato.lib and object E:\VSProjects\Projects\MSFRottenPotato\x64\Debug\MSFRottenPotato.exp
+libconcrtd.lib(UMSFreeVirtualProcessorRoot.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(UMSFreeThreadProxy.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(SearchAlgorithms.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(location.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(UMSBackgroundPoller.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(VirtualProcessorRoot.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(FreeVirtualProcessorRoot.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(FreeThreadProxy.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(ThreadProxy.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(Transmogrificator.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(TaskCollectionBase.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(WorkQueue.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(Chores.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(ExternalContextBase.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(UMSThreadVirtualProcessor.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(UMSThreadInternalContext.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(TransmogrifiedPrimary.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(SchedulingRing.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(ScheduleGroupBase.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(CacheLocalScheduleGroup.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(FairScheduleGroup.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(InternalContextBase.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(VirtualProcessor.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(SchedulingNode.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(SubAllocator.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(HillClimbing.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(SchedulerProxy.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(WinRTWrapper.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(ThreadProxyFactoryManager.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(ContextBase.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(TaskCollection.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(SchedulerPolicyBase.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(ExecutionResource.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(ResourceManager.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(SchedulerBase.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(UMSWrapper.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(UMSThreadProxy.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(rtlocks.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(event.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(Platform.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libconcrtd.lib(utils.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+MSFRottenPotato.obj : error LNK2001: unresolved external symbol _CrtDbgReportW
+libcpmtd.lib(stdthrow.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libcpmtd.lib(thread0.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libcpmtd.lib(syserror.obj) : error LNK2001: unresolved external symbol _CrtDbgReportW
+libcpmtd.lib(mutex.obj) : error LNK2019: unresolved external symbol _calloc_dbg referenced in function _Mtx_init
+libcpmtd.lib(cond.obj) : error LNK2001: unresolved external symbol _calloc_dbg
+libcpmtd.lib(mutex.obj) : error LNK2019: unresolved external symbol _free_dbg referenced in function _Mtx_destroy
+libcpmtd.lib(cond.obj) : error LNK2001: unresolved external symbol _free_dbg
+libconcrtd.lib(SubAllocator.obj) : error LNK2019: unresolved external symbol _CrtIsValidHeapPointer referenced in function "private: bool __cdecl Concurrency::details::SubAllocator::InitAndCheckBlockOnAlloc(union Concurrency::details::AllocationEntry *,unsigned __int64)" (?InitAndCheckBlockOnAlloc@SubAllocator@details@Concurrency@@AEAA_NPEATAllocationEntry@23@_K@Z)
+E:\VSProjects\Projects\MSFRottenPotato\x64\Debug\MSFRottenPotato.dll : fatal error LNK1120: 4 unresolved externals
