@@ -1,0 +1,15 @@
+-- Enable advanced options
+EXEC sp_configure 'show advanced options', 1
+RECONFIGURE
+GO
+
+-- Enabled ad hoc queries
+EXEC sp_configure 'ad hoc distributed queries', 1
+RECONFIGURE
+GO
+
+-- Execute SQL query on a remote SQL Server as a sysadmin.  This uses the SQL Server service account to authenticate to the remote SQL Server instance. 
+DECLARE @sql NVARCHAR(MAX)
+set @sql = 'select a.* from openrowset(''SQLNCLI'', ''Server=SQLSERVER2;Trusted_Connection=yes;'', ''select * from master.dbo.sysdatabases'') as a'
+select @sql
+EXEC sp_executeSQL @sql

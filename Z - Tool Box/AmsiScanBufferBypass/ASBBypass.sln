@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASBBypass", "ASBBypass\ASBBypass.csproj", "{431EF2D9-5CCA-41D3-87BA-C7F5E4582DD2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{431EF2D9-5CCA-41D3-87BA-C7F5E4582DD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431EF2D9-5CCA-41D3-87BA-C7F5E4582DD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431EF2D9-5CCA-41D3-87BA-C7F5E4582DD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431EF2D9-5CCA-41D3-87BA-C7F5E4582DD2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B232247-F0F5-4C7C-A6D6-6D27F9EE4FF1}
+	EndGlobalSection
+EndGlobal

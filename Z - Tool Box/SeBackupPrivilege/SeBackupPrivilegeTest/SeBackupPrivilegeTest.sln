@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 4.3
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeBackupPrivilegeTest", "SeBackupPrivilegeTest.csproj", "{43CC53E2-B096-4E44-9BBB-7B1DB1E3F0C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43CC53E2-B096-4E44-9BBB-7B1DB1E3F0C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43CC53E2-B096-4E44-9BBB-7B1DB1E3F0C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43CC53E2-B096-4E44-9BBB-7B1DB1E3F0C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43CC53E2-B096-4E44-9BBB-7B1DB1E3F0C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal

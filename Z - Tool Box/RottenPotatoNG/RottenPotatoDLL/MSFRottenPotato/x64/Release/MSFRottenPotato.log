@@ -1,0 +1,17 @@
+﻿  stdafx.cpp
+  dllmain.cpp
+  IStorageTrigger.cpp
+  LocalNegotiator.cpp
+LocalNegotiator.cpp(72): warning C4018: '>=': signed/unsigned mismatch
+LocalNegotiator.cpp(75): warning C4018: '<': signed/unsigned mismatch
+  MSFRottenPotato.cpp
+MSFRottenPotato.cpp(103): warning C4244: 'argument': conversion from 'SOCKET' to 'int', possible loss of data
+MSFRottenPotato.cpp(329): warning C4101: 'ntlmLoc': unreferenced local variable
+     Creating library I:\RottenPotatoNG\RottenPotatoDLL\x64\Release\MSFRottenPotato.lib and object I:\RottenPotatoNG\RottenPotatoDLL\x64\Release\MSFRottenPotato.exp
+  Generating code
+  204 of 209 functions (97.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  MSFRottenPotato.vcxproj -> I:\RottenPotatoNG\RottenPotatoDLL\x64\Release\MSFRottenPotato.dll
+  MSFRottenPotato.vcxproj -> I:\RottenPotatoNG\RottenPotatoDLL\x64\Release\MSFRottenPotato.pdb (Full PDB)

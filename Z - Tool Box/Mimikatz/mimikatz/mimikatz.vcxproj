@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Second_Release_PowerShell|Win32">
+      <Configuration>Second_Release_PowerShell</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Second_Release_PowerShell|x64">
+      <Configuration>Second_Release_PowerShell</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Simple_DLL|Win32">
+      <Configuration>Simple_DLL</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Simple_DLL|x64">
+      <Configuration>Simple_DLL</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Simple_DLL|ARM64">
+      <Configuration>Simple_DLL</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FB9B5E61-7C34-4280-A211-E979E1D6977F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>mimikatz</RootNamespace>
+    <SccProjectName>Svn</SccProjectName>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <WindowsTargetPlatformVersion Condition="'$(Platform)' == 'ARM64'">10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType Condition="('$(Configuration)' == 'Second_Release_PowerShell') Or ('$(Configuration)' == 'Simple_DLL')">DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset Condition="'$(VCTargetsPath11)' != ''">v110_xp</PlatformToolset>
+    <PlatformToolset Condition="'$(VCTargetsPath12)' != ''">v120_xp</PlatformToolset>
+    <PlatformToolset Condition="'$(VCTargetsPath14)' != ''">v140_xp</PlatformToolset>
+    <PlatformToolset Condition="'$(VCTargetsPath15)' != ''">v141_xp</PlatformToolset>
+    <UseOfMfc>static</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="Exists('$(VCTargetsPath)\Platforms\$(Platform)\PlatformToolsets\ddk2003') Or Exists('$(VCTargetsPath)\..\Platforms\$(Platform)\PlatformToolsets\ddk2003')">
+    <PlatformToolset>ddk2003</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Platform)' == 'ARM64'">
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>static</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)$(Platform)\</OutDir>
+    <IntDir>$(Platform)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib\$(Platform);$(LibraryPath)</LibraryPath>
+    <TargetName Condition="'$(Configuration)' == 'Second_Release_PowerShell'">powerkatz</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)' == 'Second_Release_PowerShell'">_POWERKATZ;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <CreateHotpatchableImage>false</CreateHotpatchableImage>
+      <ErrorReporting>None</ErrorReporting>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>advapi32.lib;bcrypt.lib;cabinet.lib;crypt32.lib;cryptdll.lib;delayimp.lib;dnsapi.lib;fltlib.lib;msxml2.lib;ncrypt.lib;netapi32.lib;ntdsapi.lib;ole32.lib;oleaut32.lib;rpcrt4.lib;shlwapi.lib;samlib.lib;secur32.lib;shell32.lib;user32.lib;userenv.lib;version.lib;hid.lib;setupapi.lib;winscard.lib;winsta.lib;wbemuuid.lib;wldap32.lib;wtsapi32.lib;advapi32.hash.lib;msasn1.min.lib;ntdll.min.lib;netapi32.min.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AssemblyDebug>false</AssemblyDebug>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <LinkErrorReporting>NoErrorReport</LinkErrorReporting>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <DelayLoadDLLs>bcrypt.dll;ncrypt.dll</DelayLoadDLLs>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ItemGroup>
+    <ClCompile Include="..\modules\kull_m_acr.c" />
+    <ClCompile Include="..\modules\kull_m_asn1.c" />
+    <ClCompile Include="..\modules\kull_m_busylight.c" />
+    <ClCompile Include="..\modules\kull_m_cabinet.c" />
+    <ClCompile Include="..\modules\kull_m_cred.c" />
+    <ClCompile Include="..\modules\kull_m_crypto.c" />
+    <ClCompile Include="..\modules\kull_m_crypto_sk.c" />
+    <ClCompile Include="..\modules\kull_m_dpapi.c" />
+    <ClCompile Include="..\modules\kull_m_file.c" />
+    <ClCompile Include="..\modules\kull_m_handle.c" />
+    <ClCompile Include="..\modules\kull_m_hid.c" />
+    <ClCompile Include="..\modules\kull_m_kernel.c" />
+    <ClCompile Include="..\modules\kull_m_key.c" />
+    <ClCompile Include="..\modules\kull_m_ldap.c" />
+    <ClCompile Include="..\modules\kull_m_net.c" />
+    <ClCompile Include="..\modules\kull_m_memory.c" />
+    <ClCompile Include="..\modules\kull_m_minidump.c" />
+    <ClCompile Include="..\modules\kull_m_output.c" />
+    <ClCompile Include="..\modules\kull_m_patch.c" />
+    <ClCompile Include="..\modules\kull_m_pipe.c" />
+    <ClCompile Include="..\modules\kull_m_pn532.c" />
+    <ClCompile Include="..\modules\kull_m_process.c" />
+    <ClCompile Include="..\modules\kull_m_rdm.c" />
+    <ClCompile Include="..\modules\kull_m_registry.c" />
+    <ClCompile Include="..\modules\kull_m_remotelib.c" />
+    <ClCompile Include="..\modules\kull_m_sr98.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_bkrp.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_dpapi-entries.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_drsr.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_mimicom.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_ms-bkrp_c.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_ms-claims.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_ms-credentialkeys.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_ms-dcom_IObjectExporter_c.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_ms-drsr_c.c" />
+    <ClCompile Include="..\modules\rpc\kull_m_rpc_ms-pac.c" />
+    <ClCompile Include="..\modules\kull_m_service.c" />
+    <ClCompile Include="..\modules\kull_m_string.c" />
+    <ClCompile Include="..\modules\kull_m_token.c" />
+    <ClCompile Include="..\modules\kull_m_xml.c" />
+    <ClCompile Include="..\modules\sqlite3.c">
+      <PreprocessorDefinitions>SQLITE_UNTESTABLE;SQLITE_DISABLE_INTRINSIC;SQLITE_OMIT_LOCALTIME;SQLITE_DQS=0;SQLITE_THREADSAFE=0;SQLITE_DEFAULT_MEMSTATUS=0;SQLITE_DEFAULT_WAL_SYNCHRONOUS=1;SQLITE_LIKE_DOESNT_MATCH_BLOBS;SQLITE_MAX_EXPR_DEPTH=0;SQLITE_OMIT_DECLTYPE;SQLITE_OMIT_DEPRECATED;SQLITE_OMIT_PROGRESS_CALLBACK;SQLITE_OMIT_SHARED_CACHE;SQLITE_USE_ALLOCA;SQLITE_OMIT_OR_OPTIMIZATION;SQLITE_OMIT_LIKE_OPTIMIZATION;SQLITE_OMIT_BETWEEN_OPTIMIZATION;SQLITE_OMIT_TRUNCATE_OPTIMIZATION;SQLITE_OMIT_TCL_VARIABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level2</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="mimikatz.c" />
+    <ClCompile Include="modules\crypto\kuhl_m_crypto_extractor.c" />
+    <ClCompile Include="modules\crypto\kuhl_m_crypto_patch.c" />
+    <ClCompile Include="modules\crypto\kuhl_m_crypto_pki.c" />
+    <ClCompile Include="modules\crypto\kuhl_m_crypto_sc.c" />
+    <ClCompile Include="modules\dpapi\kuhl_m_dpapi.c" />
+    <ClCompile Include="modules\dpapi\kuhl_m_dpapi_oe.c" />
+    <ClCompile Include="modules\dpapi\packages\kuhl_m_dpapi_chrome.c" />
+    <ClCompile Include="modules\dpapi\packages\kuhl_m_dpapi_creds.c" />
+    <ClCompile Include="modules\dpapi\packages\kuhl_m_dpapi_keys.c" />
+    <ClCompile Include="modules\dpapi\packages\kuhl_m_dpapi_lunahsm.c" />
+    <ClCompile Include="modules\dpapi\packages\kuhl_m_dpapi_powershell.c" />
+    <ClCompile Include="modules\dpapi\packages\kuhl_m_dpapi_rdg.c" />
+    <ClCompile Include="modules\dpapi\packages\kuhl_m_dpapi_ssh.c" />
+    <ClCompile Include="modules\dpapi\packages\kuhl_m_dpapi_wlan.c" />
+    <ClCompile Include="modules\kerberos\kuhl_m_kerberos.c" />
+    <ClCompile Include="modules\kerberos\kuhl_m_kerberos_ccache.c" />
+    <ClCompile Include="modules\kerberos\kuhl_m_kerberos_claims.c" />
+    <ClCompile Include="modules\kerberos\kuhl_m_kerberos_pac.c" />
+    <ClCompile Include="modules\kerberos\kuhl_m_kerberos_ticket.c" />
+    <ClCompile Include="modules\kuhl_m_acr.c" />
+    <ClCompile Include="modules\kuhl_m_busylight.c" />
+    <ClCompile Include="modules\kuhl_m_crypto.c" />
+    <ClCompile Include="modules\kuhl_m_event.c" />
+    <ClCompile Include="modules\kuhl_m_iis.c" />
+    <ClCompile Include="modules\kuhl_m_kernel.c" />
+    <ClCompile Include="modules\kuhl_m_lsadump.c" />
+    <ClCompile Include="modules\kuhl_m_lsadump_remote.c" />
+    <ClCompile Include="modules\kuhl_m_misc.c" />
+    <ClCompile Include="modules\kuhl_m_net.c" />
+    <ClCompile Include="modules\kuhl_m_privilege.c" />
+    <ClCompile Include="modules\kuhl_m_process.c" />
+    <ClCompile Include="modules\kuhl_m_rdm.c" />
+    <ClCompile Include="modules\kuhl_m_sr98.c" />
+    <ClCompile Include="modules\kuhl_m_rpc.c" />
+    <ClCompile Include="modules\kuhl_m_service.c" />
+    <ClCompile Include="modules\kuhl_m_service_remote.c" />
+    <ClCompile Include="modules\kuhl_m_sid.c" />
+    <ClCompile Include="modules\kuhl_m_standard.c" />
+    <ClCompile Include="modules\kuhl_m_sysenvvalue.c" />
+    <ClCompile Include="modules\kuhl_m_token.c" />
+    <ClCompile Include="modules\kuhl_m_ts.c" />
+    <ClCompile Include="modules\kuhl_m_vault.c" />
+    <ClCompile Include="modules\kuhl_m_minesweeper.c" />
+    <ClCompile Include="modules\lsadump\kuhl_m_lsadump_dc.c" />
+    <ClCompile Include="modules\sekurlsa\crypto\kuhl_m_sekurlsa_nt5.c" />
+    <ClCompile Include="modules\sekurlsa\crypto\kuhl_m_sekurlsa_nt6.c" />
+    <ClCompile Include="modules\sekurlsa\kuhl_m_sekurlsa.c" />
+    <ClCompile Include="modules\sekurlsa\kuhl_m_sekurlsa_sk.c" />
+    <ClCompile Include="modules\sekurlsa\kuhl_m_sekurlsa_utils.c" />
+    <ClCompile Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_credman.c" />
+    <ClCompile Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_dpapi.c" />
+    <ClCompile Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_kerberos.c" />
+    <ClCompile Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_livessp.c" />
+    <ClCompile Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_msv1_0.c" />
+    <ClCompile Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_ssp.c" />
+    <ClCompile Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_tspkg.c" />
+    <ClCompile Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_wdigest.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\modules\kull_m_acr.h" />
+    <ClInclude Include="..\modules\kull_m_asn1.h" />
+    <ClInclude Include="..\modules\kull_m_busylight.h" />
+    <ClInclude Include="..\modules\kull_m_cabinet.h" />
+    <ClInclude Include="..\modules\kull_m_cred.h" />
+    <ClInclude Include="..\modules\kull_m_crypto.h" />
+    <ClInclude Include="..\modules\kull_m_crypto_sk.h" />
+    <ClInclude Include="..\modules\kull_m_crypto_system.h" />
+    <ClInclude Include="..\modules\kull_m_dpapi.h" />
+    <ClInclude Include="..\modules\kull_m_file.h" />
+    <ClInclude Include="..\modules\kull_m_handle.h" />
+    <ClInclude Include="..\modules\kull_m_hid.h" />
+    <ClInclude Include="..\modules\kull_m_kernel.h" />
+    <ClInclude Include="..\modules\kull_m_key.h" />
+    <ClInclude Include="..\modules\kull_m_ldap.h" />
+    <ClInclude Include="..\modules\kull_m_mifare.h" />
+    <ClInclude Include="..\modules\kull_m_net.h" />
+    <ClInclude Include="..\modules\kull_m_memory.h" />
+    <ClInclude Include="..\modules\kull_m_minidump.h" />
+    <ClInclude Include="..\modules\kull_m_output.h" />
+    <ClInclude Include="..\modules\kull_m_patch.h" />
+    <ClInclude Include="..\modules\kull_m_pipe.h" />
+    <ClInclude Include="..\modules\kull_m_pn532.h" />
+    <ClInclude Include="..\modules\kull_m_process.h" />
+    <ClInclude Include="..\modules\kull_m_rdm.h" />
+    <ClInclude Include="..\modules\kull_m_registry.h" />
+    <ClInclude Include="..\modules\kull_m_registry_structures.h" />
+    <ClInclude Include="..\modules\kull_m_remotelib.h" />
+    <ClInclude Include="..\modules\kull_m_sr98.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_bkrp.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_dpapi-entries.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_drsr.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_mimicom.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_ms-claims.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_ms-credentialkeys.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_ms-dcom_IObjectExporter.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_ms-drsr.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_ms-bkrp.h" />
+    <ClInclude Include="..\modules\rpc\kull_m_rpc_ms-pac.h" />
+    <ClInclude Include="..\modules\kull_m_samlib.h" />
+    <ClInclude Include="..\modules\kull_m_service.h" />
+    <ClInclude Include="..\modules\kull_m_string.h" />
+    <ClInclude Include="..\modules\kull_m_token.h" />
+    <ClInclude Include="..\modules\kull_m_xml.h" />
+    <ClInclude Include="..\modules\sqlite3.h" />
+    <ClInclude Include="mimikatz.h" />
+    <ClInclude Include="modules\crypto\kuhl_m_crypto_extractor.h" />
+    <ClInclude Include="modules\crypto\kuhl_m_crypto_patch.h" />
+    <ClInclude Include="modules\crypto\kuhl_m_crypto_pki.h" />
+    <ClInclude Include="modules\crypto\kuhl_m_crypto_sc.h" />
+    <ClInclude Include="modules\dpapi\kuhl_m_dpapi.h" />
+    <ClInclude Include="modules\dpapi\kuhl_m_dpapi_oe.h" />
+    <ClInclude Include="modules\dpapi\packages\kuhl_m_dpapi_chrome.h" />
+    <ClInclude Include="modules\dpapi\packages\kuhl_m_dpapi_creds.h" />
+    <ClInclude Include="modules\dpapi\packages\kuhl_m_dpapi_keys.h" />
+    <ClInclude Include="modules\dpapi\packages\kuhl_m_dpapi_lunahsm.h" />
+    <ClInclude Include="modules\dpapi\packages\kuhl_m_dpapi_powershell.h" />
+    <ClInclude Include="modules\dpapi\packages\kuhl_m_dpapi_rdg.h" />
+    <ClInclude Include="modules\dpapi\packages\kuhl_m_dpapi_ssh.h" />
+    <ClInclude Include="modules\dpapi\packages\kuhl_m_dpapi_wlan.h" />
+    <ClInclude Include="modules\kerberos\kuhl_m_kerberos.h" />
+    <ClInclude Include="modules\kerberos\kuhl_m_kerberos_ccache.h" />
+    <ClInclude Include="modules\kerberos\kuhl_m_kerberos_claims.h" />
+    <ClInclude Include="modules\kerberos\kuhl_m_kerberos_pac.h" />
+    <ClInclude Include="modules\kerberos\kuhl_m_kerberos_ticket.h" />
+    <ClInclude Include="modules\kuhl_m.h" />
+    <ClInclude Include="modules\kuhl_m_acr.h" />
+    <ClInclude Include="modules\kuhl_m_busylight.h" />
+    <ClInclude Include="modules\kuhl_m_crypto.h" />
+    <ClInclude Include="modules\kuhl_m_event.h" />
+    <ClInclude Include="modules\kuhl_m_iis.h" />
+    <ClInclude Include="modules\kuhl_m_kernel.h" />
+    <ClInclude Include="modules\kuhl_m_lsadump.h" />
+    <ClInclude Include="modules\kuhl_m_lsadump_remote.h" />
+    <ClInclude Include="modules\kuhl_m_misc.h" />
+    <ClInclude Include="modules\kuhl_m_net.h" />
+    <ClInclude Include="modules\kuhl_m_privilege.h" />
+    <ClInclude Include="modules\kuhl_m_process.h" />
+    <ClInclude Include="modules\kuhl_m_rdm.h" />
+    <ClInclude Include="modules\kuhl_m_sr98.h" />
+    <ClInclude Include="modules\kuhl_m_rpc.h" />
+    <ClInclude Include="modules\kuhl_m_service.h" />
+    <ClInclude Include="modules\kuhl_m_service_remote.h" />
+    <ClInclude Include="modules\kuhl_m_sid.h" />
+    <ClInclude Include="modules\kuhl_m_standard.h" />
+    <ClInclude Include="modules\kuhl_m_sysenvvalue.h" />
+    <ClInclude Include="modules\kuhl_m_token.h" />
+    <ClInclude Include="modules\kuhl_m_ts.h" />
+    <ClInclude Include="modules\kuhl_m_vault.h" />
+    <ClInclude Include="modules\kuhl_m_minesweeper.h" />
+    <ClInclude Include="modules\lsadump\kuhl_m_lsadump_dc.h" />
+    <ClInclude Include="modules\sekurlsa\crypto\kuhl_m_sekurlsa_nt5.h" />
+    <ClInclude Include="modules\sekurlsa\crypto\kuhl_m_sekurlsa_nt6.h" />
+    <ClInclude Include="modules\sekurlsa\globals_sekurlsa.h" />
+    <ClInclude Include="modules\sekurlsa\kuhl_m_sekurlsa.h" />
+    <ClInclude Include="modules\sekurlsa\kuhl_m_sekurlsa_sk.h" />
+    <ClInclude Include="modules\sekurlsa\kuhl_m_sekurlsa_utils.h" />
+    <ClInclude Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_credman.h" />
+    <ClInclude Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_dpapi.h" />
+    <ClInclude Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_kerberos.h" />
+    <ClInclude Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_livessp.h" />
+    <ClInclude Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_msv1_0.h" />
+    <ClInclude Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_ssp.h" />
+    <ClInclude Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_tspkg.h" />
+    <ClInclude Include="modules\sekurlsa\packages\kuhl_m_sekurlsa_wdigest.h" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(ConfigurationType)' == 'Application'">
+    <ResourceCompile Include="mimikatz.rc" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(ConfigurationType)' == 'Application'">
+    <None Include="mimikatz.ico" />
+  </ItemGroup>
+</Project>

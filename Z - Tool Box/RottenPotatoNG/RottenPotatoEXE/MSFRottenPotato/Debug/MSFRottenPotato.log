@@ -1,0 +1,7 @@
+﻿  LocalNegotiator.cpp
+c:\users\test\documents\visual studio 2015\projects\msfrottenpotato\msfrottenpotato\localnegotiator.cpp(72): warning C4018: '>=': signed/unsigned mismatch
+c:\users\test\documents\visual studio 2015\projects\msfrottenpotato\msfrottenpotato\localnegotiator.cpp(75): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  MSFRottenPotato.cpp
+  MSFRottenPotato.vcxproj -> C:\Users\TEST\Documents\Visual Studio 2015\Projects\MSFRottenPotato\Debug\MSFRottenPotato.dll

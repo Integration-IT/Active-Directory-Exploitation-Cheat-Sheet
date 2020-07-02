@@ -1,0 +1,40 @@
+-- Requirement: Python must be setup during the installation.
+
+-- Enable advanced options
+sp_configure 'show advanced options',1
+reconfigure
+go
+
+-- Enable external scripts
+-- Requires a restart of the SQL Server service to take effect
+-- User must have "EXECUTE ANY EXTERNAL SCRIPT" privilege
+sp_configure 'external scripts enabled',1
+reconfigure WITH OVERRIDE
+go
+
+-- Run OS command via Python
+-- Source: https://gist.github.com/james-otten/63389189ee73376268c5eb676946ada5
+exec sp_execute_external_script 
+@language =N'Python',
+@script=N'import subprocess
+p = subprocess.Popen("cmd.exe /c whoami", stdout=subprocess.PIPE)
+OutputDataSet = pandas.DataFrame([str(p.stdout.read(), "utf-8")])'
+WITH RESULT SETS (([cmd_out] nvarchar(max)))
+
+-- Get Python version
+-- Source: https://gist.github.com/james-otten/63389189ee73376268c5eb676946ada5
+exec sp_execute_external_script 
+@language =N'Python',
+@script=N'import sys
+OutputDataSet = pandas.DataFrame([sys.version])'
+WITH RESULT SETS ((python_version nvarchar(max)))
+
+-- Disable external scripts
+sp_configure 'external scripts enabled',0
+reconfigure
+go
+
+-- Disable advanced options
+sp_configure 'show advanced options',0
+reconfigure
+go

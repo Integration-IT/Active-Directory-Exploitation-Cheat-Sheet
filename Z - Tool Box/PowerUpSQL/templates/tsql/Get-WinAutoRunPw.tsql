@@ -1,0 +1,66 @@
+-- Get the Windows auto login credentials through SQL Server using xp_regread
+-- Requirements
+-- 2014 or later = sysadmin
+-- 2000 to 2012 = public role with execute privs on xp_regread (default)
+
+-------------------------------------------------------------------------
+-- Get Windows Auto Login Credentials from the Registry
+-------------------------------------------------------------------------
+
+-- Get AutoLogin Default Domain
+DECLARE @AutoLoginDomain  SYSNAME
+EXECUTE master.dbo.xp_regread
+@rootkey		= N'HKEY_LOCAL_MACHINE',
+@key			= N'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon',
+@value_name		= N'DefaultDomainName',
+@value			= @AutoLoginDomain output
+
+-- Get AutoLogin DefaultUsername
+DECLARE @AutoLoginUser  SYSNAME
+EXECUTE master.dbo.xp_regread
+@rootkey		= N'HKEY_LOCAL_MACHINE',
+@key			= N'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon',
+@value_name		= N'DefaultUserName',
+@value			= @AutoLoginUser output
+
+-- Get AutoLogin DefaultUsername
+DECLARE @AutoLoginPassword  SYSNAME
+EXECUTE master.dbo.xp_regread
+@rootkey		= N'HKEY_LOCAL_MACHINE',
+@key			= N'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon',
+@value_name		= N'DefaultPassword',
+@value			= @AutoLoginPassword output
+
+-- Display Results
+SELECT @AutoLoginDomain, @AutoLoginUser, @AutoLoginPassword
+
+-------------------------------------------------------------------------
+-- Get Alternative Windows Auto Login Credentials from the Registry
+-------------------------------------------------------------------------
+
+-- Get Alt AutoLogin Default Domain
+DECLARE @AltAutoLoginDomain  SYSNAME
+EXECUTE master.dbo.xp_regread
+@rootkey		= N'HKEY_LOCAL_MACHINE',
+@key			= N'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon',
+@value_name		= N'AltDefaultDomainName',
+@value			= @AltAutoLoginDomain output
+
+-- Get Alt AutoLogin DefaultUsername
+DECLARE @AltAutoLoginUser  SYSNAME
+EXECUTE master.dbo.xp_regread
+@rootkey		= N'HKEY_LOCAL_MACHINE',
+@key			= N'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon',
+@value_name		= N'AltDefaultUserName',
+@value			= @AltAutoLoginUser output
+
+-- Get Alt AutoLogin DefaultUsername
+DECLARE @AltAutoLoginPassword  SYSNAME
+EXECUTE master.dbo.xp_regread
+@rootkey		= N'HKEY_LOCAL_MACHINE',
+@key			= N'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon',
+@value_name		= N'AltDefaultPassword',
+@value			= @AltAutoLoginPassword output
+
+-- Display Results
+SELECT @AltAutoLoginDomain, @AltAutoLoginUser, @AltAutoLoginPassword
