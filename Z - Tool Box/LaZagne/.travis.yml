@@ -1,0 +1,60 @@
+os: linux
+language: python
+
+lint_steps: &lint_steps
+  before_install:
+    - pip install --upgrade pip
+    - pip install flake8
+  script: flake8 . --count --select=E9,F63,F72,F82 --show-source --statistics
+
+matrix:
+  include:
+    - name: "Test and deploy on Python 2.7"
+      python: '2.7'
+    - name: "Build on Python 2.7 on macOS"
+      os: osx
+      language: shell  # 'language: python' is not yet supported on Travis CI macOS
+      before_install:
+      - python -m pip install --upgrade pip
+      - pip install pyinstaller -r requirements.txt
+      script:
+       - pyinstaller --onefile Mac/laZagne.py
+       - ls -l dist  # See file size (4.8 mb), etc.
+       - dist/laZagne all
+    - name: "Lint on Python 2.7"
+      python: '2.7'
+      <<: *lint_steps
+    - name: "Lint on Python 3.7"
+      python: '3.7'
+      dist: xenial  # required for Python >= 3.7
+      <<: *lint_steps
+
+before_install:
+- sudo add-apt-repository ppa:ubuntu-wine/ppa -y
+- sudo apt-get update -qq
+- sudo apt-get install -qq wine
+- wget https://www.python.org/ftp/python/2.7.16/python-2.7.16.amd64.msi --output-document=python.msi
+- wine msiexec /i python.msi /qn
+- wget https://files.pythonhosted.org/packages/83/cc/2e39fa39b804f7b6e768a37657d75eb14cd917d1f43f376dad9f7c366ccf/pywin32-224-cp27-cp27m-win_amd64.whl --output-document=pywin32-224-cp27-none-win_amd64.whl
+- wine c:\\Python27\\python.exe -m pip install pywin32-224-cp27-none-win_amd64.whl
+- wine c:\\Python27\\python.exe -m pip install pyinstaller -r requirements.txt
+- wine c:\\Python27\\Scripts\\pyinstaller --noconsole --onefile Windows/lazagne.spec
+- ls -l dist  # See file size (4.8 mb), etc.
+install: true  # do not repeat `pip install -r requirements.txt`
+script:
+- wine Z:\\home\\travis\\build\\AlessandroZ\\LaZagne\\dist\\laZagne.exe all
+before_deploy:
+- tar -zcvf lazagne.tar.gz dist/lazagne.exe
+deploy:
+  provider: releases
+  skip_cleanup: true
+  overwrite: true
+  api_key:
+    secure: TDw9TTOMSJ+zMOVVrEcCCKG+6eDzrfOPz3dUN6EM0QgDZ0gstsf3T24JIV0wsZQYwY5ceYBlZu33/6Rb62b8U/tOaZXYSy9LWmFzqSRH15RvLBBA+2PtbojYNZw1YymGSiG2GBuNHu0VlkDvR/ogTvJ8lY731MPdxUdXibJMfsBVcoKped0ss+cXsKZV0C8FYz3RU6EJsx0oDLHJmLn30Lji1DA7nTO/SJ5AX6ZD7Qp34/YlwkWdih/x0v8uYUfqsiuqNhmfVcheJua7JaFlfwuJj1IDT0UDVaFQn+xkxkK+Bn+h7qjOUOKYzUEfxh78Q6iDd1YtCETR0NPTlNeDDv6LfJoP9gsE68WWBAFhijnRvF084yN1ciQ1Ch+hITANgpcF2cmMg8Tu+YLeYDWfLi8/G7u4TYAQ7Pmvce6PweP9sQ6WGvsC2H+6xNEAjMCdMoCldPfaDdGprIGtx3DD8NyqyVL6S31HkJ5gcPUcarqjGvUVWETkVUVuAQp9pgdYyx52SHifB0tbvie9NkjVdRjBCy3Oxp5bZvdzj19bAEGWu6QFwZibAtHXDq6IdsmKefktrUQd5QUbx0/Y0gpnMuD5ghSoUVdxA9FY8CyD853R13nMLJN5LedV6TFjx/8DgHRIATBSoiLi8L6/fdZAG0yeH/lBcqbLfTM6tLS5HBo=
+  file: 
+    - dist/lazagne.exe
+    - lazagne.tar.gz
+  on:
+    tags: true
+    all_branches: true
+    repo: AlessandroZ/LaZagne
